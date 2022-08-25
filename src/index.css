@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Karla:wght@300;400;500;600;700;800&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: 'Karla', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0B2434;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  cursor: pointer;
+}
+
+.App {
+  min-height: 320px;
+  width: 320px;
+  background-color: #F5F5F5;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dice-container {
+  margin-top: 23px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.die {
+  position: relative;
+  height: 36px;
+  width: 36px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 20.5889px;
+  line-height: 24px;
+  text-align: center;
+  color: #2B283A;
+}
+
+.die.held {
+  background-color: #59E391;
+}
+
+.die.held.three::after {
+  background-color: #59E391;
+}
+
+.extras {
+  margin-top: 26px;
+  padding: 0 35px;
+  height: 36px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.time {
+  margin: 26px 0;
+  padding-inline: 35px;
+  min-height: 36px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.extra-div:first-child {
+  margin-right: auto;
+}
+
+.extra-div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 15px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0px 3.2px 7.68px rgba(0, 0, 0, 0.18);
+}
+
+.roll-btn {
+  min-width: 92px;
+  height: 100%;
+  background: #5035FF;
+  box-shadow: 0px 3.2px 7.68px rgba(0, 0, 0, 0.18);
+  border-radius: 4px;
+  border: none;
+  font-weight: 700;
+  font-size: 16.384px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+}
+
+.roll-btn:focus {
+  outline: none;
+}
+
+.roll-btn:active {
+  box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 1.2em;
+}
+
+.card-value {
+  font-size: 0.9em;
+}
+
+.game-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 25.6px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.03em;
+  color: #2B283A;
+}
+
+.game-instructions {
+  margin: 0 43.5px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13.1072px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.03em;
+  color: #4A4E74
+}
+
+.one::before {
+  content: "•";
+}
+
+.two::before {
+  content: "•";
+  position: absolute;
+  top: -2px;
+  left: 5px;
+}
+
+.two::after {
+  content: "•";
+  position: absolute;
+  bottom: -2px;
+  right: 5px;
+}
+
+.three::before {
+  content: "• • •";
+  line-height: 10px;
+  word-spacing: 9px;
+  position: absolute;
+  top: 3px;
+  left: -1px;
+}
+
+.three::after {
+  content: "•";
+  position: absolute;
+  padding-top: 18px;
+  background-color: white;
+  line-height: 18px;
+  bottom: 0px;
+  right: 4px;
+}
+
+.four::before {
+  content: "• • • •";
+  line-height: 18px;
+  word-spacing: 9px;
+}
+
+.five::before {
+  content: "• • •";
+  line-height: 10px;
+  word-spacing: 9px;
+  position: absolute;
+  top: 3px;
+  left: -1px;
+}
+
+.five::after {
+  content: "• •";
+  line-height: 10px;
+  word-spacing: 9px;
+  position: absolute;
+  bottom: 3px;
+  left: 4px;
+}
+
+.six::before {
+  content: "• • • • • •";
+  line-height: 10px;
+  word-spacing: 9px;
+}
