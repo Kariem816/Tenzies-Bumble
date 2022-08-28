@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Die(props) {
-    let numberClassName, hamada = 1
+    let numberClassName
     switch (props.value) {
         case 1:
             numberClassName = "one"
@@ -25,9 +25,10 @@ export default function Die(props) {
 
     return (
         <div
-            className={`die ${props.isHeld && "held"} ${numberClassName}`}
+            className={`die ${props.isHeld && "held"} ${props.view.diceView === "dice" && numberClassName}`}
             onClick={props.handleClick}
         >
+            {props.view.diceView === "numbers" && props.value}
         </div>
     )
 }

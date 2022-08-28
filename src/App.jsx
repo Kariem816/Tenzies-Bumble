@@ -1,9 +1,11 @@
 import React from "react";
 import Die from "./components/Die"
+import Header from "./components/Header"
 import { nanoid } from "nanoid"
 import Confetti from 'react-confetti'
 
 const RECORD_LOCAL_KEY = "tenzies.bumble.record"
+const VIEW_LOCAL_KEY = "tenzies.bumble.view"
 
 function App() {
   const [dice, setDice] = React.useState(allNewDice())
@@ -13,6 +15,9 @@ function App() {
   const [record, setRecord] = React.useState(
     JSON.parse(localStorage.getItem(RECORD_LOCAL_KEY)) || ""
   )
+  const [view, setView] = React.useState(
+    JSON.parse(localStorage.getItem(VIEW_LOCAL_KEY)) || { diceView: "numbers"}
+  )
 
   React.useEffect(() => {
     const dieNumber = dice[0].value
@@ -20,6 +25,9 @@ function App() {
       setTenzies(true)
     }
   }, [dice])
+  React.useEffect(() => {
+    localStorage.setItem(VIEW_LOCAL_KEY, JSON.stringify(view))
+  }, [view])
 
   function allNewDice() {
     const newDice = []
@@ -47,6 +55,7 @@ function App() {
     <Die
       key={die.id}
       value={die.value}
+      view={view}
       isHeld={die.isHeld}
       handleClick={() => holdDice(die.id)}
     />
@@ -92,45 +101,57 @@ function App() {
     return formatTime(duration)
   }
 
+  function flipView() {
+    setView(prevView => prevView.diceView === "dice" ? {...prevView, diceView: "numbers"} : {...prevView, diceView: "dice"})
+  }
+
   const style = tenzies ? { marginRight: "auto" } : {}
 
   return (
-    <main className="App">
-      <p className="game-title">Tenzies</p>
-      <p className="game-instructions">
-        Roll until all dice are the same. Click each die to freeze it at its current value between rolls.
-      </p>
-      <div className="dice-container">
-        {diceElements}
-      </div>
-      <div className="extras">
-        <button
-          type="button"
-          className="roll-btn"
-          onClick={roll}
-          style={style}
-        >
-          {tenzies ? "New Game" : "Roll"}
-        </button>
+    <>
+      <header>
+        <Header
+          handleClick={flipView}
+          view={view}
+        />
+      </header>
+      <main className="App">
+        <p className="game-title">Tenzies</p>
+        <p className="game-instructions">
+          Roll until all dice are the same. Click each die to freeze it at its current value between rolls.
+        </p>
+        <div className="dice-container">
+          {diceElements}
+        </div>
+        <div className="extras">
+          <button
+            type="button"
+            className="roll-btn"
+            onClick={roll}
+            style={style}
+          >
+            {tenzies ? "New Game" : "Roll"}
+          </button>
+          {tenzies &&
+            <div className="extra-div">
+              <span className="card-title">Rolls</span>
+              <span className="card-value">{rolls}</span>
+            </div>}
+        </div>
         {tenzies &&
-          <div className="extra-div">
-            <span className="card-title">Rolls</span>
-            <span className="card-value">{rolls}</span>
+          <div className="time">
+            <div className="extra-div">
+              <span className="card-title">Time</span>
+              <span className="card-value">{calcTime()}</span>
+            </div>
+            <div className="extra-div">
+              <span className="card-title">Record</span>
+              <span className="card-value">{formatTime(parseFloat(record).toFixed(1))}</span>
+            </div>
           </div>}
-      </div>
-      {tenzies &&
-      <div className="time">
-          <div className="extra-div">
-            <span className="card-title">Time</span>
-            <span className="card-value">{calcTime()}</span>
-          </div>
-          <div className="extra-div">
-            <span className="card-title">Record</span>
-            <span className="card-value">{formatTime(parseFloat(record).toFixed(1))}</span>
-          </div>
-      </div>}
-      {tenzies && <Confetti />}
-    </main>
+        {tenzies && <Confetti />}
+      </main>
+    </>
   )
 }
 
