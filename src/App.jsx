@@ -10,19 +10,27 @@ const VIEW_LOCAL_KEY = "tenzies.bumble.view"
 function App() {
   const [dice, setDice] = React.useState(allNewDice())
   const [tenzies, setTenzies] = React.useState(false)
-  const [startTime, setStartTime] = React.useState(Date.now())
+  const [time, setTime] = React.useState({
+    startTime: 0,
+    finishTime: 0,
+    isBegun: false
+  })
   const [rolls, setRolls] = React.useState(0)
   const [record, setRecord] = React.useState(
     JSON.parse(localStorage.getItem(RECORD_LOCAL_KEY)) || ""
   )
   const [view, setView] = React.useState(
-    JSON.parse(localStorage.getItem(VIEW_LOCAL_KEY)) || { diceView: "numbers"}
+    JSON.parse(localStorage.getItem(VIEW_LOCAL_KEY)) || { diceView: "numbers", color: "black" }
   )
 
   React.useEffect(() => {
     const dieNumber = dice[0].value
     if (dice.every(die => (die.value === dieNumber && die.isHeld === true))) {
       setTenzies(true)
+      setTime(prevTime => ({
+        ...prevTime,
+        finishTime: Date.now()
+      }))
     }
   }, [dice])
   React.useEffect(() => {
@@ -49,6 +57,13 @@ function App() {
         else
           return die
       }))
+    if (!time.isBegun) {
+      setTime({
+        startTime: Date.now(),
+        finishTime: 0,
+        isBegun: true
+      })
+    }
   }
 
   const diceElements = dice.map(die => (
@@ -65,9 +80,21 @@ function App() {
     if (tenzies) {
       setDice(allNewDice())
       setTenzies(false)
-      setStartTime(Date.now())
+      setTime(Date.now())
       setRolls(0)
+      setTime({
+        startTime: 0,
+        finishTime: 0,
+        isBegun: false
+      })
     } else {
+      if (!time.isBegun) {
+        setTime({
+          startTime: Date.now(),
+          finishTime: 0,
+          isBegun: true
+        })
+      }
       setDice(prevDice => prevDice.map(die => {
         if (die.isHeld) return die
         else return { ...die, value: Math.ceil(Math.random() * 6) }
@@ -95,14 +122,10 @@ function App() {
   }
 
   function calcTime() {
-    const duration = (Date.now() - startTime) / 1000
+    const duration = (time.finishTime - time.startTime) / 1000
     checkRecord(duration)
 
     return formatTime(duration)
-  }
-
-  function flipView() {
-    setView(prevView => prevView.diceView === "dice" ? {...prevView, diceView: "numbers"} : {...prevView, diceView: "dice"})
   }
 
   const style = tenzies ? { marginRight: "auto" } : {}
@@ -111,8 +134,8 @@ function App() {
     <>
       <header>
         <Header
-          handleClick={flipView}
           view={view}
+          setView={setView}
         />
       </header>
       <main className="App">

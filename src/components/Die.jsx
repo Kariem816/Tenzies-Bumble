@@ -23,10 +23,15 @@ export default function Die(props) {
             break
     }
 
+    const style = {
+        color: props.view.color === "black" && props.isHeld ? "#a5a0a0" : ""
+    }
+
     return (
         <div
-            className={`die ${props.isHeld && "held"} ${props.view.diceView === "dice" && numberClassName}`}
+            className={`die ${props.isHeld && props.view.color} ${props.view.diceView === "dice" && numberClassName}`}
             onClick={props.handleClick}
+            style={style}
         >
             {props.view.diceView === "numbers" && props.value}
         </div>
